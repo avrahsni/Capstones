@@ -8,33 +8,18 @@
 import SwiftUI
 
 struct ViewTestView: View {
+    
     @Environment(\.dismiss) var dismiss
     
-    @State private var mitzvah = Mitzvah.addMitzvot()[0]
+    let mitzvot: [Mitzvah] = Mitzvah.addMitzvot()
     
     var body: some View {
-        
-        NavigationView {
-            VStack {
-                Spacer()
-                HStack {
-                    Text("\(mitzvah.engText)").font(.system(size: 24))
-                    Spacer()
-                    Text("\(mitzvah.hebText)").font(.system(size: 24))
-                } .padding()
-                Spacer()
-                Text(mitzvah.verse).font(.system(size: 32))
-                Spacer()
-                Spacer()
-                Spacer()
-            } .navigationTitle(mitzvah.title)
-                .navigationBarTitleDisplayMode(.large)
+        Button("Press to dismiss") {
+            dismiss()
         }
-        
-        
-        
-        
-        
+        .font(.title)
+        .padding()
+        .background(.black)
     }
 }
 

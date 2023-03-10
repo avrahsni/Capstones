@@ -13,76 +13,89 @@ struct ContentView: View {
     @State private var filteredMitzvot = Mitzvah.addMitzvot()
     @State private var searchText = ""
     
-    @State private var searchBar = UISearchBar()
+    
     
     init() {
 //        Use this if NavigationBarTitle is with Large Font
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Color("myGold"))]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Colors.gold)]
 
         //Use this if NavigationBarTitle is with displayMode = .inline
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Color("myGold"))]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor(Colors.gold)]
 
-        UINavigationBar.appearance().tintColor = UIColor(Color("myGold"))
-        UINavigationBar.appearance().barTintColor = UIColor(Color("myBlue"))
+        UINavigationBar.appearance().tintColor = UIColor(Colors.gold)
+        UINavigationBar.appearance().barTintColor = UIColor(Colors.blue)
         UINavigationBar.appearance().isTranslucent = false
         
-        self.searchBar = UISearchBar()
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).textColor = .black
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(Colors.lightBlue)
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = .black
+        UITextField.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).textColor = UIColor(Colors.gold)
         
-        UISearchBar.appearance().barTintColor = UIColor(Color("lightBlue"))
-//        UISearchBar.appearance().backgroundColor = UIColor(Color("lightBlue"))
-        UISearchBar.appearance().tintColor = UIColor(Color("lightBlue"))
-        searchBar.setTextFieldColor(UIColor(Color("lightBlue")))
     }
     
     @State private var text = ""
     @State private var isEditing = false
     
+    @State private var showingSheet = false
+    
     var body: some View {
         
         ZStack {
-            Color("myBlue")
+            Colors.blue
                 .ignoresSafeArea()
                 .opacity(1.0)
             
             VStack {
                 
-                
-                
                 NavigationStack {
                     
-                    SearchBar(text: $searchText)
-                        .padding(.bottom, 0)
+//                    SearchBar(text: $searchText)
+//                        .padding(.bottom, 0)
                         
                     List {
-                        ForEach(searchResults, id: \.self) { mitzvah in
-                            
-                            if let i = mitzvot.firstIndex(of: mitzvah) {
-                                NavigationLink(mitzvah.title) {
-                                    GameView(mitzvah: $mitzvot[i])
+                        if !searchResults.isEmpty {
+                            ForEach(searchResults, id: \.self) { mitzvah in
+                                
+                                if let i = mitzvot.firstIndex(of: mitzvah) {
+                                    NavigationLink(mitzvah.title) {
+                                        DetailView(mitzvah: $mitzvot[i])
+                                    }
                                 }
+                                
                             }
+                        } else {
+                            Text("No Results")
+                        }
+                        
+                        
+                    }
+                    .background(Colors.blue)
+                    .scrollContentBackground(.hidden)
+                    .navigationTitle(Text("Mitzvot"))
+                    .toolbar {
+                        Button() {
+                            print("filter button pressed")
+                            filterButtonPressed()
+                            showingSheet.toggle()
+                        } label: {
+//                            Image(systemName: "line.horizontal.3.decrease")
+//                            Image(systemName: "slider.horizontal.3")
+                            Image(systemName: "line.3.horizontal.decrease")
+//                            Image(systemName: "tag")
+//                            Image(systemName: "tag.fill")
                             
+                        }
+                        .sheet(isPresented: $showingSheet) {
+                            SheetView(mitzvot: mitzvot)
+                                .presentationDetents([.medium])
                         }
                         
                     }
-                    .background(Color("myBlue"))
-    //                .scrollContentBackground(.hidden)
-                    .navigationTitle(Text("Mitzvot"))
-        //            .toolbar(content: {
-        //                ToolbarItem(placement: .) {
-        //                    Color(.blue)
-        //                }
-        //            })
-    //                .toolbarBackground(.blue)
-        //            .toolbarBackground(
-        //                // 1
-        //                Color(.blue),
-        //                // 2
-        //                for: .navigationBar
-        //            )
+                    
                 }
-                .accentColor(Color("myGold"))
-//                .searchable(text: $searchText)
+                .accentColor(Colors.gold)
+                .searchable(text: $searchText)
+                
             }
             
             
@@ -103,27 +116,33 @@ struct ContentView: View {
             }
         }
     
-    
+    func filterButtonPressed() {
+        
+    }
     
     
 }
 
-struct GameView: View {
+struct SheetView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    let mitzvot: [Mitzvah]
+
+    var body: some View {
+        Button("Press to dismiss") {
+            dismiss()
+        }
+        .font(.title)
+        .padding()
+        .background(.black)
+    }
+}
+
+struct DetailView: View {
     @Environment(\.dismiss) var dismiss
     
     @Binding var mitzvah: Mitzvah
     
-//    init() {
-//        //Use this if NavigationBarTitle is with Large Font
-//        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-//
-//        //Use this if NavigationBarTitle is with displayMode = .inline
-//        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
-//
-//        UINavigationBar.appearance().tintColor = UIColor(Color("myGold"))
-//        UINavigationBar.appearance().barTintColor = UIColor(Color("myBlue"))
-//
-//    }
     
     var body: some View {
         
@@ -136,7 +155,7 @@ struct GameView: View {
                 VStack {
                     Spacer()
                     Text(mitzvah.title).font(.system(size: 28)).padding().multilineTextAlignment(.center)
-                        .shadow(color: Color("myGold"), radius: 10)
+                        .shadow(color: Colors.gold, radius: 10)
                     HStack {
                         Text("\(mitzvah.engText)").font(.system(size: 24)).multilineTextAlignment(.leading)
                         Spacer()
@@ -150,8 +169,8 @@ struct GameView: View {
                 .navigationBarTitleDisplayMode(.automatic)
                 .background(NavigationConfigurator { nc in
                     
-                    nc.navigationBar.barTintColor = UIColor(Color("myBlue"))
-                    nc.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.white]
+                    nc.navigationBar.barTintColor = UIColor(Colors.blue)
+                    nc.navigationBar.isTranslucent = true
                 })
 //                .toolbarBackground(
 //                    // 1
@@ -164,11 +183,6 @@ struct GameView: View {
             
             
         }
-            
-        
-        
-        
-        
         
     }
     
@@ -204,20 +218,5 @@ extension String {
         }
         
         return text
-    }
-}
-
-extension UISearchBar {
-    func setTextFieldColor(_ color: UIColor) {
-        for subView in self.subviews {
-            for subSubView in subView.subviews {
-                let view = subSubView as? UITextInputTraits
-                if view != nil {
-                    let textField = view as? UITextField
-                    textField?.backgroundColor = color
-                    break
-                }
-            }
-        }
     }
 }

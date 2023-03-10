@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4614755329B701C500296BD6 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755229B701C500296BD6 /* SearchBar.swift */; };
+		4614755529B8D60900296BD6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755429B8D60900296BD6 /* Colors.swift */; };
 		4623BC0B29B259BB00F14A58 /* Taryag_MitzvotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */; };
 		4623BC0D29B259BB00F14A58 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623BC0C29B259BB00F14A58 /* ContentView.swift */; };
 		4623BC0F29B259BD00F14A58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4623BC0E29B259BD00F14A58 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		4614755229B701C500296BD6 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		4614755429B8D60900296BD6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4623BC0729B259BB00F14A58 /* Taryag Mitzvot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Taryag Mitzvot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Taryag_MitzvotApp.swift; sourceTree = "<group>"; };
 		4623BC0C29B259BB00F14A58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			children = (
 				4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */,
 				4623BC0C29B259BB00F14A58 /* ContentView.swift */,
+				4614755429B8D60900296BD6 /* Colors.swift */,
 				4623BC1C29B5579A00F14A58 /* ViewTestView.swift */,
 				4614755229B701C500296BD6 /* SearchBar.swift */,
 				4623BC1829B25A1200F14A58 /* Mitzvah.swift */,
@@ -152,6 +155,7 @@
 				4623BC1D29B5579A00F14A58 /* ViewTestView.swift in Sources */,
 				4623BC1929B25A1200F14A58 /* Mitzvah.swift in Sources */,
 				4623BC1B29B25A8A00F14A58 /* Mitzvot.swift in Sources */,
+				4614755529B8D60900296BD6 /* Colors.swift in Sources */,
 				4623BC0D29B259BB00F14A58 /* ContentView.swift in Sources */,
 				4623BC0B29B259BB00F14A58 /* Taryag_MitzvotApp.swift in Sources */,
 				4614755329B701C500296BD6 /* SearchBar.swift in Sources */,
