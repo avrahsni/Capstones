@@ -13,8 +13,6 @@ struct ContentView: View {
     @State private var filteredMitzvot = Mitzvah.addMitzvot()
     @State private var searchText = ""
     
-    
-    
     init() {
 //        Use this if NavigationBarTitle is with Large Font
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(Colors.gold)]
@@ -38,6 +36,12 @@ struct ContentView: View {
     
     @State private var showingSheet = false
     
+    @State var showView = false
+    
+    @State var filters: [Tag] = UserDefaults().object(forKey: "filters") as? [Tag] ?? Tags.getTags()
+    
+    var settings = Array(0..<10).map({ _ in true })
+    
     var body: some View {
         
         ZStack {
@@ -48,9 +52,6 @@ struct ContentView: View {
             VStack {
                 
                 NavigationStack {
-                    
-//                    SearchBar(text: $searchText)
-//                        .padding(.bottom, 0)
                         
                     List {
                         if !searchResults.isEmpty {
@@ -61,13 +62,10 @@ struct ContentView: View {
                                         DetailView(mitzvah: $mitzvot[i])
                                     }
                                 }
-                                
                             }
                         } else {
                             Text("No Results")
                         }
-                        
-                        
                     }
                     .background(Colors.blue)
                     .scrollContentBackground(.hidden)
@@ -76,48 +74,77 @@ struct ContentView: View {
                         Button() {
                             print("filter button pressed")
                             filterButtonPressed()
-                            showingSheet.toggle()
                         } label: {
-//                            Image(systemName: "line.horizontal.3.decrease")
-//                            Image(systemName: "slider.horizontal.3")
-                            Image(systemName: "line.3.horizontal.decrease")
-//                            Image(systemName: "tag")
-//                            Image(systemName: "tag.fill")
+//                            Image(systemName: "line.3.horizontal.decrease")
+                            Image("filter")
                             
                         }
                         .sheet(isPresented: $showingSheet) {
-                            SheetView(mitzvot: mitzvot)
+                            SheetView(filters: $filters, mitzvot: mitzvot)
                                 .presentationDetents([.medium])
                         }
                         
                     }
-                    
                 }
                 .accentColor(Colors.gold)
                 .searchable(text: $searchText)
-                
             }
             
-            
-            
         }
-        
-        
-        
         
     }
     
     var searchResults: [Mitzvah] {
-            if searchText.isEmpty {
-                return mitzvot
-            } else {
-                let searchText = searchText.lowercased()
-                return mitzvot.filter { $0.title.lowercased().contains(searchText) || $0.engText.lowercased().contains(searchText) || $0.hebText.stripVowels().contains(searchText) }
+        
+        var filtered: [Mitzvah] {
+            var allFalse = [Bool]()
+            for tag in filters {
+                allFalse.append(tag.toggle)
             }
+            if !allFalse.contains(true) {
+                return mitzvot
+            }
+            
+            var included = mitzvot
+            var tags = [String]()
+            
+            for tag in filters {
+                if tag.toggle {
+                    tags.append(tag.name)
+                }
+            }
+            
+            for mitzvah in mitzvot {
+                for tag in tags {
+                    if !mitzvah.tags.contains(tag) && included.contains(mitzvah) {
+                        included.remove(at: included.firstIndex(of: mitzvah)!)
+                    }
+                }
+                
+            }
+            return included
         }
+        
+        if searchText.isEmpty {
+            return filtered
+        } else {
+            let searchText = searchText.lowercased()
+            return filtered.filter { $0.title.lowercased().contains(searchText) || $0.engText.lowercased().contains(searchText) || $0.hebText.stripVowels().contains(searchText) }
+        }
+    }
     
     func filterButtonPressed() {
-        
+        filters = populateFilterArray()
+        showingSheet.toggle()
+    }
+    
+    func populateFilterArray() -> [Tag] {
+//        var filters = [Tag]()
+        if filters.isEmpty {
+            filters = Tags.getTags()
+            print("got Tags")
+        }
+        return filters
     }
     
     
@@ -126,15 +153,111 @@ struct ContentView: View {
 struct SheetView: View {
     @Environment(\.dismiss) var dismiss
     
+    @State var isModalSheetShown: Bool = false
+    @State private var toggle = false
+    
+    var tags = Tags.getTags()
+    
+    @Binding var filters: [Tag]
+    
     let mitzvot: [Mitzvah]
+    
+    
+    var body: some View {
+        
+        ZStack {
+            
+            Colors.blue
+                .ignoresSafeArea()
+            
+            NavigationStack {
+                VStack {
+                    
+                    Form {
+                        ForEach(0..<filters.count, id: \.self) { position in
+                            HStack {
+//                                let key = tags[position]
+                                TagRow(tag: $filters[position])
+                            }
+                            
+                        }
+                        
+//                        ForEach(getDictionary()) { (key, value) in
+//                            let position: Int = getTags().firstIndex(of: tag)!
+//                            HStack {
+//                                Toggle(tag, isOn: $toggle)
+//                            }
+//
+//                        }
+                    }
+                    .background(Colors.blue)
+                    .scrollContentBackground(.hidden)
+                    
+                    
+                }
+                
+                .navigationTitle(Text(("Filters")))
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Reset", action: {
+                            resetFilters()
+                            self.dismiss()
+                        })
+                        
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done", action: {
+                            self.dismiss()
+                        })
+                    }
+                }
+                .tint(Colors.gold)
+                
+            }
+            .background(Colors.blue)
+        }
+        
+        
+    }
+    
+    func saveUserDefaults() {
+        UserDefaults().set(filters, forKey: "filters")
+    }
+    
+    func resetFilters() {
+        for i in 0..<filters.count {
+            if filters[i].toggle {
+                filters[i].toggle = false
+            }
+        }
+    }
+    
+    func getTags() -> [String : Bool] {
+        var dict = [String : Bool]()
+        for mitzvah in mitzvot {
+            for tag in mitzvah.tags {
+                if dict[tag] != nil {
+                    dict[tag] = true
+                }
+            }
+        }
+        return dict
+    }
+    
+    func setToggle(_ value: Bool) {
+        toggle = value
+    }
+    
+}
+
+struct TagRow: View {
+    
+    @Binding var tag: Tag
 
     var body: some View {
-        Button("Press to dismiss") {
-            dismiss()
+        HStack {
+            Toggle(tag.name, isOn: $tag.toggle)
         }
-        .font(.title)
-        .padding()
-        .background(.black)
     }
 }
 
@@ -148,9 +271,6 @@ struct DetailView: View {
         
         
         ZStack {
-//            Color("myBlue")
-//                .opacity(0.1)
-//                .ignoresSafeArea()
             ScrollView {
                 VStack {
                     Spacer()
@@ -167,18 +287,6 @@ struct DetailView: View {
                 }
                 .navigationTitle(mitzvah.verse)
                 .navigationBarTitleDisplayMode(.automatic)
-                .background(NavigationConfigurator { nc in
-                    
-                    nc.navigationBar.barTintColor = UIColor(Colors.blue)
-                    nc.navigationBar.isTranslucent = true
-                })
-//                .toolbarBackground(
-//                    // 1
-//                    Color("myBlue"),
-//                    // 2
-//                    for: .navigationBar
-//                )
-//                .shadow(color: Color("myBlue"), radius: 10)
             }
             
             
@@ -194,19 +302,11 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct NavigationConfigurator: UIViewControllerRepresentable {
-    var configure: (UINavigationController) -> Void = { _ in }
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<NavigationConfigurator>) -> UIViewController {
-        UIViewController()
-    }
-    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<NavigationConfigurator>) {
-        if let nc = uiViewController.navigationController {
-            self.configure(nc)
-        }
-    }
-
-}
+//struct FilterView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SheetView(filters: [Tag(name: "Testing 1"), Tag(name: "Testing 2"), Tag(name: "Testing 3")], mitzvot: Mitzvah.addMitzvot())
+//    }
+//}
 
 extension String {
     func stripVowels() -> String {
@@ -218,5 +318,27 @@ extension String {
         }
         
         return text
+    }
+}
+
+//extension Dictionary {
+//    public init(keys: [Key], values: [Value]) {
+//        precondition(keys.count == values.count)
+//
+//        self.init()
+//
+//        for (index, key) in keys.enumerated() {
+//            self[key] = values[index]
+//        }
+//    }
+//}
+
+extension UserDefaults {
+    var filters: [Tag] {
+        get {
+            value(forKey: #function) as! [Tag]
+        } set {
+            set(newValue, forKey: #function)
+        }
     }
 }

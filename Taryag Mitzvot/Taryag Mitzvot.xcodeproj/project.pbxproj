@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		4614755329B701C500296BD6 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755229B701C500296BD6 /* SearchBar.swift */; };
 		4614755529B8D60900296BD6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755429B8D60900296BD6 /* Colors.swift */; };
+		4614755729BB885200296BD6 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755629BB885200296BD6 /* Tag.swift */; };
+		4614755A29BB948300296BD6 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755929BB948300296BD6 /* TagView.swift */; };
+		4614755C29BF7C3200296BD6 /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4614755B29BF7C3200296BD6 /* Tags.swift */; };
 		4623BC0B29B259BB00F14A58 /* Taryag_MitzvotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */; };
 		4623BC0D29B259BB00F14A58 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623BC0C29B259BB00F14A58 /* ContentView.swift */; };
 		4623BC0F29B259BD00F14A58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4623BC0E29B259BD00F14A58 /* Assets.xcassets */; };
@@ -21,6 +24,9 @@
 /* Begin PBXFileReference section */
 		4614755229B701C500296BD6 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		4614755429B8D60900296BD6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		4614755629BB885200296BD6 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		4614755929BB948300296BD6 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
+		4614755B29BF7C3200296BD6 /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		4623BC0729B259BB00F14A58 /* Taryag Mitzvot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Taryag Mitzvot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Taryag_MitzvotApp.swift; sourceTree = "<group>"; };
 		4623BC0C29B259BB00F14A58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -42,6 +48,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4614755829BB885A00296BD6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4623BC1829B25A1200F14A58 /* Mitzvah.swift */,
+				4614755629BB885200296BD6 /* Tag.swift */,
+				4614755429B8D60900296BD6 /* Colors.swift */,
+				4614755B29BF7C3200296BD6 /* Tags.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		4623BBFE29B259BA00F14A58 = {
 			isa = PBXGroup;
 			children = (
@@ -62,11 +79,11 @@
 			isa = PBXGroup;
 			children = (
 				4623BC0A29B259BB00F14A58 /* Taryag_MitzvotApp.swift */,
+				4614755829BB885A00296BD6 /* Models */,
 				4623BC0C29B259BB00F14A58 /* ContentView.swift */,
-				4614755429B8D60900296BD6 /* Colors.swift */,
 				4623BC1C29B5579A00F14A58 /* ViewTestView.swift */,
 				4614755229B701C500296BD6 /* SearchBar.swift */,
-				4623BC1829B25A1200F14A58 /* Mitzvah.swift */,
+				4614755929BB948300296BD6 /* TagView.swift */,
 				4623BC1A29B25A8A00F14A58 /* Mitzvot.swift */,
 				4623BC0E29B259BD00F14A58 /* Assets.xcassets */,
 				4623BC1029B259BD00F14A58 /* Preview Content */,
@@ -152,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4614755729BB885200296BD6 /* Tag.swift in Sources */,
 				4623BC1D29B5579A00F14A58 /* ViewTestView.swift in Sources */,
 				4623BC1929B25A1200F14A58 /* Mitzvah.swift in Sources */,
 				4623BC1B29B25A8A00F14A58 /* Mitzvot.swift in Sources */,
@@ -159,6 +177,8 @@
 				4623BC0D29B259BB00F14A58 /* ContentView.swift in Sources */,
 				4623BC0B29B259BB00F14A58 /* Taryag_MitzvotApp.swift in Sources */,
 				4614755329B701C500296BD6 /* SearchBar.swift in Sources */,
+				4614755C29BF7C3200296BD6 /* Tags.swift in Sources */,
+				4614755A29BB948300296BD6 /* TagView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,16 +11,34 @@ struct ViewTestView: View {
     
     @Environment(\.dismiss) var dismiss
     
+//    @StateObject var viewModel = ContentViewModel()
+    
     let mitzvot: [Mitzvah] = Mitzvah.addMitzvot()
     
     var body: some View {
-        Button("Press to dismiss") {
-            dismiss()
+        Form {
+            let tags = loadTags()
+            ForEach(tags, id: \.self) { tag in
+                Text(tag)
+            }
         }
-        .font(.title)
-        .padding()
-        .background(.black)
     }
+    
+    
+    func loadTags() -> [String] {
+        var tags = [String]()
+        for mitzvah in mitzvot {
+            for tag in mitzvah.tags {
+                if !tags.contains(tag) {
+                    tags.append(tag)
+                }
+            }
+        }
+        return tags
+    }
+    
+    
+    
 }
 
 
@@ -30,3 +48,4 @@ struct ViewTestView_Previews: PreviewProvider {
         ViewTestView()
     }
 }
+
