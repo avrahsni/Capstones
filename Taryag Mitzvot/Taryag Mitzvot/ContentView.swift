@@ -76,7 +76,8 @@ struct ContentView: View {
                             filterButtonPressed()
                         } label: {
 //                            Image(systemName: "line.3.horizontal.decrease")
-                            Image("filter")
+                            Image(systemName: "line.3.horizontal")
+//                            Image("filter")
                             
                         }
                         .sheet(isPresented: $showingSheet) {
